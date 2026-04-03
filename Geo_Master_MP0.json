@@ -1,0 +1,520 @@
+[{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Agar",
+  "GeoCode": "23.7158,76.0028",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Alirajpur",
+  "GeoCode": "22.3060,74.3558",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Anuppur",
+  "GeoCode": "23.1137,81.6976",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Ashoknagar",
+  "GeoCode": "24.5775,77.7318",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Balaghat",
+  "GeoCode": "21.8129,80.1838",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Barwani",
+  "GeoCode": "22.0363,74.9033",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Betul",
+  "GeoCode": "21.9100,77.8992",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Bhind",
+  "GeoCode": "26.5638,78.7861",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Bhopal",
+  "GeoCode": "23.2599,77.4126",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Burhanpur",
+  "GeoCode": "21.3145,76.2180",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Chhatarpur",
+  "GeoCode": "24.9168,79.5910",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Chhindwara",
+  "GeoCode": "22.0574,78.9382",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Damoh",
+  "GeoCode": "23.8323,79.4387",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Datia",
+  "GeoCode": "25.6653,78.4609",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Dewas",
+  "GeoCode": "22.9676,76.0534",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Dhar",
+  "GeoCode": "22.6013,75.3025",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Dindori",
+  "GeoCode": "22.9418,81.0768",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Guna",
+  "GeoCode": "24.6324,77.3002",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Gwalior",
+  "GeoCode": "26.2124,78.1772",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Harda",
+  "GeoCode": "22.3467,77.0890",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Narmadapuram",
+  "GeoCode": "22.7531,77.7317",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Indore",
+  "GeoCode": "22.7196,75.8577",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Jabalpur",
+  "GeoCode": "23.1815,79.9864",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Jhabua",
+  "GeoCode": "22.7697,74.5921",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Katni",
+  "GeoCode": "23.8343,80.3894",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Khandwa",
+  "GeoCode": "21.8314,76.3498",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Khargone",
+  "GeoCode": "21.8335,75.6150",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Mandla",
+  "GeoCode": "22.5979,80.3714",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Mandsaur",
+  "GeoCode": "24.0734,75.0679",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Morena",
+  "GeoCode": "26.4947,77.9940",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Narsinghpur",
+  "GeoCode": "22.9473,79.1923",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Neemuch",
+  "GeoCode": "24.4738,74.8726",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Niwari",
+  "GeoCode": "25.3697,78.7986",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Panna",
+  "GeoCode": "24.7180,80.1819",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Raisen",
+  "GeoCode": "23.3327,77.7824",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Rajgarh",
+  "GeoCode": "24.0079,76.7279",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Ratlam",
+  "GeoCode": "23.3315,75.0367",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Rewa",
+  "GeoCode": "24.5362,81.3037",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Sagar",
+  "GeoCode": "23.8388,78.7378",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Satna",
+  "GeoCode": "24.6005,80.8322",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Sehore",
+  "GeoCode": "23.2032,77.0844",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Seoni",
+  "GeoCode": "22.0869,79.5435",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Shahdol",
+  "GeoCode": "23.3002,81.3569",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Shajapur",
+  "GeoCode": "23.4273,76.2730",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Sheopur",
+  "GeoCode": "25.6728,76.6961",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Shivpuri",
+  "GeoCode": "25.4320,77.6644",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Sidhi",
+  "GeoCode": "24.3956,81.8825",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Waidhan",
+  "GeoCode": "24.0627,82.6248",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Tikamgarh",
+  "GeoCode": "24.7456,78.8321",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Ujjain",
+  "GeoCode": "23.1765,75.7885",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Umaria",
+  "GeoCode": "23.5310,80.8295",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+},
+{
+  "ID": "INDMP",
+  "State": "Madhya Pradesh",
+  "StateCode": "MP0",
+  "city": "Vidisha",
+  "GeoCode": "23.5236,77.8140",
+  "ZoneName": {
+    "$numberDouble": "NaN"
+  }
+}]

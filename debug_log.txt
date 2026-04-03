@@ -1,0 +1,22 @@
+DEBUG: date=20251101, start_date=None, end_date=None
+DEBUG: df head:
+       date  ...  date_int
+0  20251101  ...  19700101
+1  20251101  ...  19700101
+2  20251101  ...  19700101
+3  20251101  ...  19700101
+4  20251101  ...  19700101
+
+[5 rows x 30 columns]
+DEBUG: filtered_df len=0
+DEBUG: date=20251101, start_date=None, end_date=None
+DEBUG: df head:
+       date  ...  date_int
+0  20251101  ...  20251101
+1  20251101  ...  20251101
+2  20251101  ...  20251101
+3  20251101  ...  20251101
+4  20251101  ...  20251101
+
+[5 rows x 30 columns]
+DEBUG: filtered_df len=95
