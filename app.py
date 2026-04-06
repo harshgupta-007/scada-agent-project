@@ -1,4 +1,6 @@
 import streamlit as st
+import nest_asyncio
+nest_asyncio.apply()
 import pandas as pd
 from utils.data_loader import load_scada_data, get_date_range, filter_data_by_date
 from utils.charts import plot_demand_trend, plot_demand_stats, plot_regional_distribution, plot_generation_mix, plot_intraday_profile,plot_regional_trend,plot_intraday_curve,generate_intraday_insights
