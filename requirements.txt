@@ -7,3 +7,4 @@ python-dotenv
 dateparser
 holidays
 nest_asyncio
+google-adk
