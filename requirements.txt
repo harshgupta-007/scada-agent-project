@@ -1,6 +1,0 @@
-google-adk
-pandas
-python-dotenv
-pymongo
-dateparser
-holidays

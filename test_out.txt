@@ -1,3 +1,0 @@
-Got 1 events
-author: scada_summary_agent, partial: None
-  text: 'Hello! How can I assist you with your SCADA data analysis?'
