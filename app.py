@@ -21,6 +21,52 @@ from google.adk.runners import Runner
 import nest_asyncio
 import asyncio
 
+# def init_agent_system():
+#     if "agent_runner" not in st.session_state:
+
+#         session_service = DatabaseSessionService(
+#             'sqlite+aiosqlite:///scada_streamlit_session.db'
+#         )
+
+#         runner = Runner(
+#             app_name="scada_summary_agent",
+#             agent=root_agent,
+#             session_service=session_service,
+#         )
+
+#         st.session_state["agent_runner"] = runner
+#         st.session_state["chat_session_id"] = "streamlit_demo_session"
+
+#         # Async setup
+#         nest_asyncio.apply()
+#         try:
+#             loop = asyncio.get_event_loop()
+#         except RuntimeError:
+#             loop = asyncio.new_event_loop()
+#             asyncio.set_event_loop(loop)
+
+#         # Ensure session exists
+#         existing_session = loop.run_until_complete(
+#             session_service.get_session(
+#                 app_name="scada_summary_agent",
+#                 user_id="streamlit_user",
+#                 session_id="streamlit_demo_session"
+#             )
+#         )
+
+#         if not existing_session:
+#             loop.run_until_complete(
+#                 session_service.create_session(
+#                     app_name="scada_summary_agent",
+#                     user_id="streamlit_user",
+#                     session_id="streamlit_demo_session"
+#                 )
+#             )
+
+
+import asyncio
+import nest_asyncio
+
 def init_agent_system():
     if "agent_runner" not in st.session_state:
 
@@ -37,13 +83,13 @@ def init_agent_system():
         st.session_state["agent_runner"] = runner
         st.session_state["chat_session_id"] = "streamlit_demo_session"
 
-        # Async setup
+        # ✅ APPLY PATCH
         nest_asyncio.apply()
-        try:
-            loop = asyncio.get_event_loop()
-        except RuntimeError:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
+
+        # ❌ DON'T use get_event_loop()
+        # ✅ ALWAYS create fresh loop
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
 
         # Ensure session exists
         existing_session = loop.run_until_complete(
@@ -62,8 +108,6 @@ def init_agent_system():
                     session_id="streamlit_demo_session"
                 )
             )
-
-
 
 ###################
 
