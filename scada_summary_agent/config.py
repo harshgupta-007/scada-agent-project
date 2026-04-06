@@ -4,7 +4,10 @@ from dotenv import load_dotenv
 # Load .env from project root
 load_dotenv()
 
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+# GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+import streamlit as st
+
+GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 
 if not GOOGLE_API_KEY:
     # This will help catch config issues early
