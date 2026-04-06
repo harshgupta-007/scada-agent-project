@@ -21,6 +21,22 @@ from google.adk.runners import Runner
 import nest_asyncio
 import asyncio
 
+def run_agent_sync(runner, session_id, message):
+    async def _run():
+        events = []
+        async for event in runner.run_async(
+            user_id="streamlit_user",
+            session_id=session_id,
+            new_message=message
+        ):
+            events.append(event)
+        return events
+
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
+    return loop.run_until_complete(_run())
+
 # def init_agent_system():
 #     if "agent_runner" not in st.session_state:
 
@@ -510,11 +526,12 @@ def render_intraday():
                     parts=[types.Part(text=prompt)]
                 )
 
-                events = list(runner.run(
-                    user_id="streamlit_user",
-                    session_id=session_id,
-                    new_message=message
-                ))
+                # events = list(runner.run(
+                #     user_id="streamlit_user",
+                #     session_id=session_id,
+                #     new_message=message
+                # ))
+                events = run_agent_sync(runner, session_id, message)
 
                 response = ""
                 for event in reversed(events):
