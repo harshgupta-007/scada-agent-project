@@ -6,7 +6,12 @@ from google.adk.tools import ToolContext
 
 # Mocking MongoDB by using a local CSV file
 # This allows the agent to run without a local MongoDB instance
-CSV_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "sample_scada.csv")
+# CSV_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "sample_scada.csv")
+CSV_PATH = os.path.join(
+    os.path.dirname(__file__),
+    "..",
+    "sample_scada.csv"
+)
 
 def _get_collection():
     """
