@@ -1,12 +1,12 @@
 import streamlit as st
 import pandas as pd
 import asyncio
+import concurrent.futures
 
 from utils.data_loader import load_scada_data, get_date_range, filter_data_by_date
 from utils.charts import (
     plot_demand_trend, plot_demand_stats, plot_regional_distribution,
-    plot_generation_mix, plot_intraday_profile, plot_regional_trend,
-    plot_intraday_curve, generate_intraday_insights,
+    plot_generation_mix, plot_intraday_curve, generate_intraday_insights,
     generate_regional_insights, plot_regional_contribution,
     plot_variability, generate_variability_insights,
     plot_ramp_trend, generate_ramp_insights,
@@ -23,9 +23,10 @@ from google.adk.runners import Runner
 
 
 # ─────────────────────────────────────────────
-# SAFE ASYNC RUNNER (FIXED)
+# SAFE ASYNC HANDLER (FINAL FIX)
 # ─────────────────────────────────────────────
 def run_agent_sync(runner, session_id, message):
+
     async def _run():
         events = []
         async for event in runner.run_async(
@@ -36,11 +37,22 @@ def run_agent_sync(runner, session_id, message):
             events.append(event)
         return events
 
-    return asyncio.run(_run())
+    try:
+        loop = asyncio.get_event_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
+    if loop.is_running():
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            future = executor.submit(lambda: asyncio.run(_run()))
+            return future.result()
+    else:
+        return loop.run_until_complete(_run())
 
 
 # ─────────────────────────────────────────────
-# INIT AGENT SYSTEM (FIXED)
+# INIT AGENT
 # ─────────────────────────────────────────────
 def init_agent_system():
     if "agent_runner" not in st.session_state:
@@ -68,7 +80,11 @@ def init_agent_system():
                     session_id="streamlit_demo_session",
                 )
 
-        asyncio.run(create_session())
+        try:
+            asyncio.run(create_session())
+        except RuntimeError:
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(create_session())
 
         st.session_state["agent_runner"] = runner
         st.session_state["chat_session_id"] = "streamlit_demo_session"
@@ -77,11 +93,7 @@ def init_agent_system():
 # ─────────────────────────────────────────────
 # PAGE CONFIG
 # ─────────────────────────────────────────────
-st.set_page_config(
-    page_title="SCADA Demand Dashboard",
-    page_icon="⚡",
-    layout="wide",
-)
+st.set_page_config(page_title="SCADA Dashboard", layout="wide")
 
 
 # ─────────────────────────────────────────────
@@ -93,7 +105,7 @@ def build_sidebar():
     page = st.sidebar.radio(
         "Select View",
         ["Overview", "Regional Analysis", "Generation Mix",
-         "Intraday Profile", "Weather Correlation", "Agent Chat"],
+         "Intraday Profile", "Agent Chat"],
         label_visibility="collapsed",
     )
 
@@ -107,9 +119,7 @@ def build_sidebar():
             value=(min_date.date(), max_date.date()),
         )
 
-        filtered_df = filter_data_by_date(df, start_date, end_date)
-
-        st.session_state["filtered_df"] = filtered_df
+        st.session_state["filtered_df"] = filter_data_by_date(df, start_date, end_date)
 
     return page
 
@@ -138,15 +148,13 @@ def main():
     elif page == "Intraday Profile":
         render_intraday()
     elif page == "Agent Chat":
-        render_agent_chat()
+        render_chat()
 
 
 # ─────────────────────────────────────────────
 # OVERVIEW
 # ─────────────────────────────────────────────
 def render_overview():
-    st.header("Overview")
-
     df = st.session_state.get("filtered_df")
 
     if df is None or df.empty:
@@ -156,17 +164,17 @@ def render_overview():
     col1, col2 = st.columns(2)
 
     with col1:
-        st.plotly_chart(plot_demand_trend(df), use_container_width=True)
+        st.plotly_chart(plot_demand_trend(df), width="stretch")
 
     with col2:
-        st.plotly_chart(plot_demand_stats(df), use_container_width=True)
+        st.plotly_chart(plot_demand_stats(df), width="stretch")
 
     st.subheader("Insights")
     for i in generate_master_insights(df):
         st.success(i)
 
     st.subheader("Anomaly Detection")
-    st.plotly_chart(plot_demand_with_anomalies(df), use_container_width=True)
+    st.plotly_chart(plot_demand_with_anomalies(df), width="stretch")
     st.warning(generate_anomaly_insights(df))
 
 
@@ -174,27 +182,23 @@ def render_overview():
 # REGIONAL
 # ─────────────────────────────────────────────
 def render_regional():
-    st.header("Regional Analysis")
-
     df = st.session_state.get("filtered_df")
 
     if df is None or df.empty:
         return
 
-    st.plotly_chart(plot_regional_contribution(df), use_container_width=True)
-    st.plotly_chart(plot_regional_trend(df), use_container_width=True)
+    st.plotly_chart(plot_regional_contribution(df), width="stretch")
+    st.plotly_chart(plot_variability(df), width="stretch")
 
     st.success(generate_regional_insights(df))
+    st.warning(generate_variability_insights(df))
 
     if st.button("Explain Regional Behavior"):
         runner = st.session_state["agent_runner"]
         session_id = st.session_state["chat_session_id"]
 
         summary = build_regional_summary(df)
-
-        prompt = f"Analyze:\n{summary}"
-
-        message = types.Content(role="user", parts=[types.Part(text=prompt)])
+        message = types.Content(role="user", parts=[types.Part(text=summary)])
 
         try:
             events = run_agent_sync(runner, session_id, message)
@@ -219,7 +223,7 @@ def render_regional():
 def render_generation():
     df = st.session_state.get("filtered_df")
     if df is not None:
-        st.plotly_chart(plot_generation_mix(df), use_container_width=True)
+        st.plotly_chart(plot_generation_mix(df), width="stretch")
 
 
 # ─────────────────────────────────────────────
@@ -228,7 +232,7 @@ def render_generation():
 def render_intraday():
     df = load_scada_data()
 
-    min_date, max_date = get_date_range(df)
+    min_date, _ = get_date_range(df)
 
     selected_date = st.date_input("Select Date", min_date.date())
 
@@ -237,8 +241,7 @@ def render_intraday():
     if df_intraday.empty:
         return
 
-    st.plotly_chart(plot_intraday_curve(df_intraday), use_container_width=True)
-
+    st.plotly_chart(plot_intraday_curve(df_intraday), width="stretch")
     st.success(generate_intraday_insights(df_intraday))
 
     if st.button("Explain Intraday Pattern"):
@@ -246,7 +249,6 @@ def render_intraday():
         session_id = st.session_state["chat_session_id"]
 
         summary = build_intraday_summary(df_intraday)
-
         message = types.Content(role="user", parts=[types.Part(text=summary)])
 
         try:
@@ -269,7 +271,7 @@ def render_intraday():
 # ─────────────────────────────────────────────
 # CHAT
 # ─────────────────────────────────────────────
-def render_agent_chat():
+def render_chat():
     st.header("AI Assistant")
 
     runner = st.session_state["agent_runner"]
