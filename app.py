@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
 import asyncio
-import concurrent.futures
+import nest_asyncio
+
+nest_asyncio.apply()
 
 from utils.data_loader import load_scada_data, get_date_range, filter_data_by_date
 from utils.charts import (
@@ -23,7 +25,7 @@ from google.adk.runners import Runner
 
 
 # ─────────────────────────────────────────────
-# SAFE ASYNC HANDLER (FINAL FIX)
+# SAFE ASYNC RUNNER (FINAL)
 # ─────────────────────────────────────────────
 def run_agent_sync(runner, session_id, message):
 
@@ -37,18 +39,7 @@ def run_agent_sync(runner, session_id, message):
             events.append(event)
         return events
 
-    try:
-        loop = asyncio.get_event_loop()
-    except RuntimeError:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-
-    if loop.is_running():
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            future = executor.submit(lambda: asyncio.run(_run()))
-            return future.result()
-    else:
-        return loop.run_until_complete(_run())
+    return asyncio.get_event_loop().run_until_complete(_run())
 
 
 # ─────────────────────────────────────────────
@@ -80,11 +71,7 @@ def init_agent_system():
                     session_id="streamlit_demo_session",
                 )
 
-        try:
-            asyncio.run(create_session())
-        except RuntimeError:
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(create_session())
+        asyncio.get_event_loop().run_until_complete(create_session())
 
         st.session_state["agent_runner"] = runner
         st.session_state["chat_session_id"] = "streamlit_demo_session"
