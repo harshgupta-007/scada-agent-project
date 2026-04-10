@@ -15,7 +15,7 @@ from utils.insights import generate_master_insights
 from utils.ai_insights import build_intraday_summary, build_regional_summary
 
 from google.genai import types
-from scada_summary_agent.agent import root_agent
+from scada_summary_agent.agent import create_root_agent
 from google.adk.sessions import DatabaseSessionService
 from google.adk.runners import Runner
 
