@@ -225,12 +225,29 @@ def render_intraday():
     st.success(generate_intraday_insights(df_intraday))
 
     if st.button("Explain Intraday Pattern"):
-        summary = build_intraday_summary(df_intraday)
-        message = types.Content(role="user", parts=[types.Part(text=summary)])
-
+    
+        # 🔥 FIX: send proper date-based prompt
+        selected_date_str = selected_date.strftime("%Y-%m-%d")
+    
+        prompt = f"""
+        Provide SCADA intraday analysis for date {selected_date_str}.
+    
+        Include:
+        - Peak demand
+        - Minimum demand
+        - Average demand
+        - Generation mix (thermal, hydel, renewable)
+        - Frequency statistics
+        """
+    
+        message = types.Content(
+            role="user",
+            parts=[types.Part(text=prompt)]
+        )
+    
         try:
             events = run_agent_sync_safe(message)
-
+    
             response = ""
             for e in reversed(events):
                 if getattr(e, "content", None):
@@ -238,9 +255,9 @@ def render_intraday():
                     if parts:
                         response = "".join(parts)
                         break
-
+    
             st.info(response)
-
+    
         except Exception as e:
             st.error(f"AI Error: {e}")
 
