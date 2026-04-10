@@ -1,19 +1,14 @@
 import streamlit as st
 import pandas as pd
 import asyncio
-import nest_asyncio
-
-nest_asyncio.apply()
 
 from utils.data_loader import load_scada_data, get_date_range, filter_data_by_date
 from utils.charts import (
-    plot_demand_trend, plot_demand_stats, plot_regional_distribution,
+    plot_demand_trend, plot_demand_stats,
     plot_generation_mix, plot_intraday_curve, generate_intraday_insights,
     generate_regional_insights, plot_regional_contribution,
     plot_variability, generate_variability_insights,
-    plot_ramp_trend, generate_ramp_insights,
-    plot_demand_with_anomalies, generate_anomaly_insights,
-    plot_intraday_with_anomalies, generate_intraday_anomaly_insights
+    plot_demand_with_anomalies, generate_anomaly_insights
 )
 from utils.insights import generate_master_insights
 from utils.ai_insights import build_intraday_summary, build_regional_summary
@@ -25,56 +20,44 @@ from google.adk.runners import Runner
 
 
 # ─────────────────────────────────────────────
-# SAFE ASYNC RUNNER (FINAL)
+# ✅ CORE ASYNC FUNCTION (FIXED)
 # ─────────────────────────────────────────────
-def run_agent_sync(runner, session_id, message):
+async def run_agent(message):
 
-    async def _run():
-        events = []
-        async for event in runner.run_async(
+    session_service = DatabaseSessionService(
+        "sqlite+aiosqlite:///scada_streamlit_session.db"
+    )
+
+    runner = Runner(
+        app_name="scada_summary_agent",
+        agent=root_agent,
+        session_service=session_service,
+    )
+
+    session_id = "streamlit_demo_session"
+
+    existing_session = await session_service.get_session(
+        app_name="scada_summary_agent",
+        user_id="streamlit_user",
+        session_id=session_id,
+    )
+
+    if not existing_session:
+        await session_service.create_session(
+            app_name="scada_summary_agent",
             user_id="streamlit_user",
             session_id=session_id,
-            new_message=message,
-        ):
-            events.append(event)
-        return events
-
-    return asyncio.get_event_loop().run_until_complete(_run())
-
-
-# ─────────────────────────────────────────────
-# INIT AGENT
-# ─────────────────────────────────────────────
-def init_agent_system():
-    if "agent_runner" not in st.session_state:
-
-        session_service = DatabaseSessionService(
-            "sqlite+aiosqlite:///scada_streamlit_session.db"
         )
 
-        runner = Runner(
-            app_name="scada_summary_agent",
-            agent=root_agent,
-            session_service=session_service,
-        )
+    events = []
+    async for event in runner.run_async(
+        user_id="streamlit_user",
+        session_id=session_id,
+        new_message=message,
+    ):
+        events.append(event)
 
-        async def create_session():
-            existing_session = await session_service.get_session(
-                app_name="scada_summary_agent",
-                user_id="streamlit_user",
-                session_id="streamlit_demo_session",
-            )
-            if not existing_session:
-                await session_service.create_session(
-                    app_name="scada_summary_agent",
-                    user_id="streamlit_user",
-                    session_id="streamlit_demo_session",
-                )
-
-        asyncio.get_event_loop().run_until_complete(create_session())
-
-        st.session_state["agent_runner"] = runner
-        st.session_state["chat_session_id"] = "streamlit_demo_session"
+    return events
 
 
 # ─────────────────────────────────────────────
@@ -115,8 +98,6 @@ def build_sidebar():
 # MAIN
 # ─────────────────────────────────────────────
 def main():
-    init_agent_system()
-
     st.title("⚡ SCADA Intelligence Dashboard")
 
     df = load_scada_data()
@@ -181,14 +162,11 @@ def render_regional():
     st.warning(generate_variability_insights(df))
 
     if st.button("Explain Regional Behavior"):
-        runner = st.session_state["agent_runner"]
-        session_id = st.session_state["chat_session_id"]
-
         summary = build_regional_summary(df)
         message = types.Content(role="user", parts=[types.Part(text=summary)])
 
         try:
-            events = run_agent_sync(runner, session_id, message)
+            events = asyncio.run(run_agent(message))
 
             response = ""
             for e in reversed(events):
@@ -220,7 +198,6 @@ def render_intraday():
     df = load_scada_data()
 
     min_date, _ = get_date_range(df)
-
     selected_date = st.date_input("Select Date", min_date.date())
 
     df_intraday = df[df["date"].dt.date == selected_date]
@@ -232,14 +209,11 @@ def render_intraday():
     st.success(generate_intraday_insights(df_intraday))
 
     if st.button("Explain Intraday Pattern"):
-        runner = st.session_state["agent_runner"]
-        session_id = st.session_state["chat_session_id"]
-
         summary = build_intraday_summary(df_intraday)
         message = types.Content(role="user", parts=[types.Part(text=summary)])
 
         try:
-            events = run_agent_sync(runner, session_id, message)
+            events = asyncio.run(run_agent(message))
 
             response = ""
             for e in reversed(events):
@@ -261,15 +235,12 @@ def render_intraday():
 def render_chat():
     st.header("AI Assistant")
 
-    runner = st.session_state["agent_runner"]
-    session_id = st.session_state["chat_session_id"]
-
     if prompt := st.chat_input("Ask something..."):
 
-        msg = types.Content(role="user", parts=[types.Part(text=prompt)])
+        message = types.Content(role="user", parts=[types.Part(text=prompt)])
 
         try:
-            events = run_agent_sync(runner, session_id, msg)
+            events = asyncio.run(run_agent(message))
 
             response = ""
             for e in reversed(events):
