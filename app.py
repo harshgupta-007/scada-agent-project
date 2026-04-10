@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 import asyncio
+import nest_asyncio
+
+nest_asyncio.apply()
 
 from utils.data_loader import load_scada_data, get_date_range, filter_data_by_date
 from utils.charts import (
@@ -20,9 +23,19 @@ from google.adk.runners import Runner
 
 
 # ─────────────────────────────────────────────
-# ✅ CORE ASYNC FUNCTION (FIXED)
+# ✅ GLOBAL EVENT LOOP (CRITICAL FIX)
 # ─────────────────────────────────────────────
-async def run_agent(message):
+if "event_loop" not in st.session_state:
+    st.session_state["event_loop"] = asyncio.new_event_loop()
+    asyncio.set_event_loop(st.session_state["event_loop"])
+
+loop = st.session_state["event_loop"]
+
+
+# ─────────────────────────────────────────────
+# ✅ INIT RUNNER ONCE (SAME LOOP)
+# ─────────────────────────────────────────────
+if "agent_runner" not in st.session_state:
 
     session_service = DatabaseSessionService(
         "sqlite+aiosqlite:///scada_streamlit_session.db"
@@ -34,30 +47,41 @@ async def run_agent(message):
         session_service=session_service,
     )
 
-    session_id = "streamlit_demo_session"
-
-    existing_session = await session_service.get_session(
-        app_name="scada_summary_agent",
-        user_id="streamlit_user",
-        session_id=session_id,
-    )
-
-    if not existing_session:
-        await session_service.create_session(
+    async def create_session():
+        existing_session = await session_service.get_session(
             app_name="scada_summary_agent",
             user_id="streamlit_user",
-            session_id=session_id,
+            session_id="streamlit_demo_session",
         )
+        if not existing_session:
+            await session_service.create_session(
+                app_name="scada_summary_agent",
+                user_id="streamlit_user",
+                session_id="streamlit_demo_session",
+            )
 
-    events = []
-    async for event in runner.run_async(
-        user_id="streamlit_user",
-        session_id=session_id,
-        new_message=message,
-    ):
-        events.append(event)
+    loop.run_until_complete(create_session())
 
-    return events
+    st.session_state["agent_runner"] = runner
+    st.session_state["chat_session_id"] = "streamlit_demo_session"
+
+
+# ─────────────────────────────────────────────
+# ✅ SAFE ASYNC CALL (SAME LOOP)
+# ─────────────────────────────────────────────
+def run_agent(message):
+
+    async def _run():
+        events = []
+        async for event in st.session_state["agent_runner"].run_async(
+            user_id="streamlit_user",
+            session_id=st.session_state["chat_session_id"],
+            new_message=message,
+        ):
+            events.append(event)
+        return events
+
+    return loop.run_until_complete(_run())
 
 
 # ─────────────────────────────────────────────
@@ -166,7 +190,7 @@ def render_regional():
         message = types.Content(role="user", parts=[types.Part(text=summary)])
 
         try:
-            events = asyncio.run(run_agent(message))
+            events = run_agent(message)
 
             response = ""
             for e in reversed(events):
@@ -213,7 +237,7 @@ def render_intraday():
         message = types.Content(role="user", parts=[types.Part(text=summary)])
 
         try:
-            events = asyncio.run(run_agent(message))
+            events = run_agent(message)
 
             response = ""
             for e in reversed(events):
@@ -240,7 +264,7 @@ def render_chat():
         message = types.Content(role="user", parts=[types.Part(text=prompt)])
 
         try:
-            events = asyncio.run(run_agent(message))
+            events = run_agent(message)
 
             response = ""
             for e in reversed(events):
