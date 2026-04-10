@@ -5,6 +5,17 @@ from .scada_mongodb import load_scada_dataframe
 from google.adk.tools import ToolContext,FunctionTool
 from datetime import datetime
 
+def normalize_date(date_str):
+    from datetime import datetime
+    
+    try:
+        return int(datetime.strptime(date_str, "%Y-%m-%d").strftime("%Y%m%d"))
+    except:
+        try:
+            return int(date_str)
+        except:
+            return date_str
+
 def fetch_scada_summary(
     tool_context: ToolContext,
     date: Optional[str] = None,
@@ -27,6 +38,15 @@ def fetch_scada_summary(
     Returns:
         Dict with demand, generation and frequency statistics.
     """
+
+    if date:
+    date = normalize_date(date)
+
+    if start_date:
+        start_date = normalize_date(start_date)
+    
+    if end_date:
+        end_date = normalize_date(end_date)
     try:
         df = load_scada_dataframe(date=date, start_date=start_date, end_date=end_date)
     except ValueError as e:
