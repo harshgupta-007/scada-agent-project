@@ -37,7 +37,7 @@ def run_agent_sync_safe(message):
 
             runner = Runner(
                 app_name="scada_summary_agent",
-                agent=root_agent,
+                agent=create_root_agent(),
                 session_service=session_service,
             )
 
