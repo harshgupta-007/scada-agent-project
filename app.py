@@ -73,7 +73,7 @@ def run_agent_sync_safe(message):
     thread.start()
     thread.join()
 
-    return result_container.get("data", [])
+    return result_container.get("data") or []
 
 
 # ─────────────────────────────────────────────
@@ -187,7 +187,17 @@ def render_regional():
             response = ""
             for e in reversed(events):
                 if getattr(e, "content", None):
-                    parts = [p.text for p in e.content.parts if hasattr(p, "text")]
+                    response = ""
+
+            for e in reversed(events):
+                if getattr(e, "content", None):
+                    for p in e.content.parts:
+                        if hasattr(p, "text") and p.text:
+                            response += p.text
+                        elif hasattr(p, "function_response"):
+                            response += f"\n\n🔧 Tool Output:\n{p.function_response}\n"
+                    if response:
+                        break
                     if parts:
                         response = "".join(parts)
                         break
