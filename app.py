@@ -280,24 +280,69 @@ def render_chat():
 
     if prompt := st.chat_input("Ask something..."):
 
-        message = types.Content(role="user", parts=[types.Part(text=prompt)])
+        message = types.Content(
+            role="user",
+            parts=[types.Part(text=prompt)]
+        )
 
         try:
             events = run_agent_sync_safe(message)
 
+            # ✅ Safety check
+            if not events:
+                st.warning("No response from agent (tool may not have returned data)")
+                return
+
             response = ""
+
             for e in reversed(events):
                 if getattr(e, "content", None):
-                    parts = [p.text for p in e.content.parts if hasattr(p, "text")]
-                    if parts:
-                        response = "".join(parts)
+
+                    for p in e.content.parts:
+
+                        # ✅ Case 1: Normal text response
+                        if hasattr(p, "text") and p.text:
+                            response += p.text
+
+                        # ✅ Case 2: Tool output (MOST IMPORTANT FIX)
+                        elif hasattr(p, "function_response") and p.function_response:
+
+                            data = p.function_response
+
+                            try:
+                                formatted = f"""
+📊 SCADA Summary:
+
+🔹 Peak Demand: {data.get('peak_demand')}
+🔹 Avg Demand: {data.get('avg_demand')}
+🔹 Total Demand: {data.get('total_demand_energy')}
+
+⚡ Generation:
+- Thermal: {data.get('total_thermal_gen')}
+- Hydel: {data.get('total_hydel_gen')}
+- Renewable: {data.get('renewable_gen_total')}
+
+📈 Frequency:
+- Min: {data.get('frequency_min')}
+- Max: {data.get('frequency_max')}
+- Avg: {data.get('frequency_avg')}
+"""
+                                response += formatted
+
+                            except Exception:
+                                response += str(data)
+
+                    if response:
                         break
+
+            # ✅ Final fallback
+            if not response:
+                response = "Agent did not return a valid response."
 
             st.write(response)
 
         except Exception as e:
-            st.error(str(e))
-
+            st.error(f"AI Error: {str(e)}")
 
 # ─────────────────────────────────────────────
 if __name__ == "__main__":
