@@ -30,6 +30,7 @@ def fetch_scada_summary(
     """
 
     try:
+        print("🔥 TOOL CALLED:", date, start_date, end_date)
         df = load_scada_dataframe(date=date, start_date=start_date, end_date=end_date)
     except ValueError as e:
         # ⚠️ Context can be useful even in error cases
